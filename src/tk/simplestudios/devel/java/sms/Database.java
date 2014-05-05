@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Database {
 	Connection conn;
-	PreparedStatement pst = null;
+	PreparedStatement query = null;
 	
 	ArrayList<String> users;
 	
@@ -29,8 +29,8 @@ public class Database {
 	
 	public void printUsers() {
 		try {
-			pst = conn.prepareStatement("SELECT * FROM `Logins`");
-			ResultSet logins = pst.executeQuery();
+			query = conn.prepareStatement("SELECT * FROM `Logins`");
+			ResultSet logins = query.executeQuery();
 			while(logins.next()){
 				String user = logins.getString("Username");
 				int id = logins.getInt("ID");
@@ -42,10 +42,10 @@ public class Database {
 				System.out.println(p);
 				System.out.println("  ID: " + id);
 				System.out.println("  Email: " + email);
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		query = null;
 	}
 }

@@ -1,5 +1,5 @@
 package tk.simplestudios.devel.java.sms;
 
-public class Student {
+public class Student extends User{
 
 }

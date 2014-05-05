@@ -5,8 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Logins {
-	ArrayList<String> users;
-	ArrayList<String> hashes;
 	
 	public static String encrypt(String input){
 		String salt = "simplestudios";
@@ -50,8 +48,6 @@ public class Logins {
 		return output;
 	}
 	
-	public void loadData(){
-		
-	}
+	
 	
 }
