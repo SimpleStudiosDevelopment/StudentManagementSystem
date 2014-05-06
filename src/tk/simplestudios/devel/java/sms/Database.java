@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Database {
-	Connection conn;
+	static Connection conn;
 	PreparedStatement query = null;
 	
 	ArrayList<String> users;
@@ -21,11 +21,47 @@ public class Database {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		printUsers();
 	}
 	public static void main(String[] args){
 		new Database();
+		System.out.println(getRowCount());
 	}
+	
+	public String[][] getUserList(){
+		String[][] list = null;
+		try {
+			ResultSet users = runQuery("SELECT * FROM 'Logins'");
+			int size = query.getUpdateCount();
+			list = new String[size][4];
+			for (int i = 0; i < size; i++){
+				users.next();
+				//0: user
+				//1: email
+				//2: password
+				//3: id
+				list[i][0] = users.getString("Username");
+				list[i][1] = users.getString("Email");
+				list[i][2] = users.getString("Password");
+				list[i][3] = Integer.toString(users.getInt("ID"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static int getRowCount(){
+		PreparedStatement ps;
+		int size = 0;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM 'Logins'");
+			size = ps.getUpdateCount();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return size;
+	}
+	
 	
 	public void printUsers() {
 		try {
@@ -47,5 +83,17 @@ public class Database {
 			e.printStackTrace();
 		}
 		query = null;
+	}
+	public ResultSet runQuery(String statement){
+		ResultSet rs = null;
+		try {
+			query = conn.prepareStatement(statement);
+			rs = query.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		query = null;
+		return rs;
+		
 	}
 }
